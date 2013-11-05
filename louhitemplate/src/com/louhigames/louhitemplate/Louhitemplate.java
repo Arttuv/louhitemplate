@@ -2,6 +2,7 @@ package com.louhigames.louhitemplate;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,12 +10,19 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
 
-public class Louhitemplate implements ApplicationListener {
+public class Louhitemplate extends InputAdapter implements ApplicationListener {
+	
+	
 	private OrthographicCamera camera;
+	private CameraMover cameraMover;
+	private GestureHandler gestureHandler;
+	
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
+	
 	
 	@Override
 	public void create() {		
@@ -33,6 +41,11 @@ public class Louhitemplate implements ApplicationListener {
 		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		
+		cameraMover = new CameraMover(camera);
+		gestureHandler = new GestureHandler(camera);
+		
+		Gdx.input.setInputProcessor(new GestureDetector(gestureHandler));
 	}
 
 	@Override
@@ -63,4 +76,31 @@ public class Louhitemplate implements ApplicationListener {
 	@Override
 	public void resume() {
 	}
+	
+	@Override
+	public boolean keyTyped(char character) {
+
+		if (character == 'w') {
+			camera.translate(0, -0.01f);
+			camera.update();
+		}
+		
+		if (character == 's') {
+			camera.translate(0, 0.01f);
+			camera.update();
+		}
+		
+		if (character == '+') {
+			camera.zoom -= 0.05f;
+			camera.update();
+		}
+		
+		if (character == '-') {
+			camera.zoom += 0.05f;
+			camera.update();
+		}
+		
+		return super.keyTyped(character);
+	}
+	
 }
