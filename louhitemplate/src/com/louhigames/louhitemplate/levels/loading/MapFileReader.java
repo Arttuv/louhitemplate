@@ -13,12 +13,10 @@ public class MapFileReader {
 		private final int BLOCK_HEIGHT = 1;
 		
 		private Pixmap mapPixmap;
-		private Pixmap entityPixmap;
 		
-		public MapFileReader(String mapPath, String entityDataPath) {
+		public MapFileReader(String mapPath) {
 
 			mapPixmap = new Pixmap(Gdx.files.internal(mapPath));
-			entityPixmap = new Pixmap(Gdx.files.internal(entityDataPath));
 
 		}
 
@@ -28,7 +26,7 @@ public class MapFileReader {
 
 		public WorldBuildInstructionObject getWorldInstructions() {
 			
-			WorldBuildInstructionObject instructions = new WorldBuildInstructionObject(getMapData(), getEntityData());
+			WorldBuildInstructionObject instructions = new WorldBuildInstructionObject(getMapData());
 			
 			return instructions;
 		}
@@ -56,31 +54,6 @@ public class MapFileReader {
 			}
 
 			return mapData;
-		}
-		
-		public List<List<String>> getEntityData() {
-
-			int mapX = entityPixmap.getWidth();
-			int mapY = entityPixmap.getHeight();
-
-			List<List<String>> entityData = new ArrayList<List<String>>();
-
-			for (int y = 0; y < mapY; y += BLOCK_HEIGHT) {
-
-				List<String> entityRowData = new ArrayList<String>();
-				for (int x = 0; x < mapX; x += BLOCK_WIDTH) {
-
-					int pixel = entityPixmap.getPixel(x, y);
-					String hexValue = getHex(pixel);
-
-					entityRowData.add(hexValue);
-
-				}
-
-				entityData.add(entityRowData);
-			}
-
-			return entityData;
 		}
 
 	}
