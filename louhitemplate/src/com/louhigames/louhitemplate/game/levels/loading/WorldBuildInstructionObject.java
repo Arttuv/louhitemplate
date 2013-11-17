@@ -1,4 +1,4 @@
-package com.louhigames.louhitemplate.levels.loading;
+package com.louhigames.louhitemplate.game.levels.loading;
 
 import java.util.List;
 
